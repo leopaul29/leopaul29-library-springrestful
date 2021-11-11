@@ -18,19 +18,19 @@ public class BookController {
 
     // Get All books
     @GetMapping("/books")
-    public List<Book> getAllNotes() {
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    // Create a new Note
-    @PostMapping("/notes")
-    public Book createNote(@Valid @RequestBody Book book) {
+    // Create a new Book
+    @PostMapping("/book")
+    public Book createBook(@Valid @RequestBody Book book) {
         return bookRepository.save(book);
     }
 
-    // Get a Single Note
-    @GetMapping("/notes/{id}")
-    public Book getNoteById(@PathVariable(value = "id") Long bookId) {
+    // Get a Single Book
+    @GetMapping("/book/{id}")
+    public Book getBookById(@PathVariable(value = "id") Long bookId) {
         return bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
     }
