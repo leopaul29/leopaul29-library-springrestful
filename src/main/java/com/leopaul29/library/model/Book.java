@@ -8,8 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name="books")
+@Entity(name = "Book")
 @Data
 public class Book implements Serializable {
     @Id
@@ -21,9 +20,9 @@ public class Book implements Serializable {
 
     @NotBlank
     private String author;
-
+/*
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date createdAt;
+    private Date createdAt;*/
 }
