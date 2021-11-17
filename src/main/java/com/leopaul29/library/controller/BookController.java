@@ -4,6 +4,7 @@ import com.leopaul29.library.exception.ResourceNotFoundException;
 import com.leopaul29.library.model.Book;
 import com.leopaul29.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,29 +18,49 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-    // Get All books
     @GetMapping("/books")
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(bookRepository.findAll());
     }
 
     // Create a new Book
     @PostMapping("/books")
-    public Book createBook(@Valid @RequestBody Book book) {
-        return bookRepository.save(book);
+    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+
+        Book newBook = bookRepository.save(book);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(newBook);
     }
 
     // Get a Single Book
     @GetMapping("/books/{id}")
-    public Book getBookById(@PathVariable(value = "id") Long bookId) {
-        return bookRepository.findById(bookId)
+    public ResponseEntity<Book> getBookById(@PathVariable(value = "id") Long bookId) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+
+        Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(book);
     }
 
     // Update a Book
     @PutMapping("/books/{id}")
-    public Book updateBook(@PathVariable(value = "id") Long bookId,
+    public ResponseEntity<Book> updateBook(@PathVariable(value = "id") Long bookId,
                            @Valid @RequestBody Book bookDetails) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
@@ -48,7 +69,9 @@ public class BookController {
         book.setAuthor(bookDetails.getAuthor());
 
         Book updatedBook = bookRepository.save(book);
-        return updatedBook;
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(updatedBook);
     }
 
     // Delete a Book
