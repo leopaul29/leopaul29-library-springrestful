@@ -33,8 +33,9 @@ public class BookController {
     public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
-
+System.out.println("book before save "+book);
         Book newBook = bookRepository.save(book);
+        System.out.println("book after save "+book);
 
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -76,7 +77,7 @@ public class BookController {
 
     // Delete a Book
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable(value = "id") Long bookId) {
+    public ResponseEntity deleteBook(@PathVariable(value = "id") Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
 
